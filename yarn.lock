@@ -11150,7 +11150,6 @@ __metadata:
     "@types/node": "npm:^22.19.1"
     "@types/semver": "npm:^7.7.1"
     "@vitest/browser-playwright": "npm:^4.1.6"
-    "@vitest/runner": "npm:^4.1.6"
     empathic: "npm:^2.0.0"
     es-toolkit: "npm:^1.43.0"
     istanbul-lib-report: "npm:^3.0.1"
@@ -11168,17 +11167,14 @@ __metadata:
     typescript: "npm:^6.0.3"
     vitest: "npm:^4.1.6"
   peerDependencies:
-    "@vitest/browser": ^3.0.0 || ^4.0.0
-    "@vitest/browser-playwright": ^4.0.0
-    "@vitest/runner": ^3.0.0 || ^4.0.0
+    "@vitest/browser": ^3.0.0 || ^4.0.0 || ^5.0.0
+    "@vitest/browser-playwright": ^4.0.0 || ^5.0.0
     storybook: "workspace:^"
-    vitest: ^3.0.0 || ^4.0.0
+    vitest: ^3.0.0 || ^4.0.0 || ^5.0.0
   peerDependenciesMeta:
     "@vitest/browser":
       optional: true
     "@vitest/browser-playwright":
-      optional: true
-    "@vitest/runner":
       optional: true
     vitest:
       optional: true
@@ -15619,7 +15615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/runner@npm:4.1.10, @vitest/runner@npm:^4.1.6":
+"@vitest/runner@npm:4.1.10":
   version: 4.1.10
   resolution: "@vitest/runner@npm:4.1.10"
   dependencies:

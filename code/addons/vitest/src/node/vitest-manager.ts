@@ -41,6 +41,16 @@ process.env.VITEST_STORYBOOK = 'true';
 export const DOUBLE_SPACES = '  ';
 const getTestName = (name: string) => `${name}${DOUBLE_SPACES}`;
 
+/**
+ * Vitest joins a suite name and a test name with a single space up to Vitest 4, and with ` > ` from
+ * Vitest 5 onwards. A name pattern built with the wrong separator matches nothing, so we derive it
+ * from the Vitest that is actually running the tests.
+ *
+ * @see https://github.com/vitest-dev/vitest/pull/10686
+ */
+export const getTestNameSeparator = (vitestVersion: string) =>
+  Number(vitestVersion.split('.')[0]) >= 5 ? ' > ' : ' ';
+
 export class VitestManager {
   vitest: Vitest | null = null;
 
@@ -261,7 +271,9 @@ export class VitestManager {
         throw new Error(`Parent story not found for story ${story.id}`);
       }
 
-      return `^${escapeRegExp(getTestName(parentStory.name))} ${escapeRegExp(story.name)}$`;
+      const separator = getTestNameSeparator(this.vitest?.version ?? '');
+
+      return `^${escapeRegExp(getTestName(parentStory.name))}${separator}${escapeRegExp(story.name)}$`;
     }
 
     return `^${escapeRegExp(story.name)}$`;

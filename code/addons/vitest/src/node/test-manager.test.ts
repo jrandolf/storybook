@@ -24,6 +24,7 @@ import { DOUBLE_SPACES } from './vitest-manager.ts';
 
 const setTestNamePattern = vi.hoisted(() => vi.fn());
 const vitest = vi.hoisted(() => ({
+  version: '4.0.0',
   projects: [{}],
   init: vi.fn(),
   close: vi.fn(),
@@ -67,6 +68,7 @@ beforeEach(() => {
     ...storeOptions.initialState,
     index: mockIndex,
   }));
+  vitest.version = '4.0.0';
   vitest.projects = [{}];
   vitest.config.coverage.enabled = false;
   createVitest.mockResolvedValue(vitest);
@@ -509,6 +511,24 @@ describe('TestManager', () => {
     // regex should be Parent Story Name + Test Name
     expect(setTestNamePattern).toHaveBeenCalledWith(
       new RegExp(`^Parent story${DOUBLE_SPACES} Test name$`)
+    );
+  });
+
+  it('should trigger a single story test on Vitest 5', async () => {
+    // Vitest 5 joins suite and test names with " > " instead of a single space
+    vitest.version = '5.0.0';
+    vitest.globTestSpecifications.mockImplementation(() => tests);
+    const testManager = await TestManager.start(options);
+
+    await testManager.handleTriggerRunEvent({
+      type: 'TRIGGER_RUN',
+      payload: {
+        storyIds: ['parent--story:test'],
+        triggeredBy: 'global',
+      },
+    });
+    expect(setTestNamePattern).toHaveBeenCalledWith(
+      new RegExp(`^Parent story${DOUBLE_SPACES} > Test name$`)
     );
   });
 
